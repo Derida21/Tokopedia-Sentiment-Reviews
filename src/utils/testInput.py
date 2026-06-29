@@ -1,27 +1,16 @@
-import pandas as pd
-import matplotlib.pyplot as plt
 import streamlit as st
-import os
 import psycopg2
-from sqlalchemy import text
 
 from utils.db_connection import get_connection
+from sqlalchemy import text
 
-def run():
-    st.header("📊 Exploratory Data Analysis")
-    st.subheader('Dataset Overview')
-    
-    @st.cache_data
-    def load_data(path):
-        return pd.read_csv(path)
-    
-    df = load_data(os.path.join("data/PRDECT-ID Dataset.csv"))
-    st.dataframe(df)
-    
+def run():    
     st.subheader('Input User')
-    # akses database
     def insert_data(product, rating, review):
+        # akses database
         conn = get_connection()
+        
+        # create session
         with conn.session as session:
             session.execute(
                 text("""
